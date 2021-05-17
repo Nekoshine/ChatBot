@@ -7,9 +7,6 @@ class Chatbot{
         if(undefined != data.name){
             this.title = data.title;
         }
-        else {
-            this.title = "Risbot";
-        }
 
         if(undefined != data.brain){
             this.brain = data.brain;

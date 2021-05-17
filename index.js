@@ -2,19 +2,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const process = require('process');
 
-const TaskService = require("./model/TaskService_ArrayImpl.js");
+const ChatbotService = require("./model/ChatbotService.js");
 
-let taskServiceInstance = new TaskService();
+let ChatbotServiceInstance = new ChatbotService();
 
 const app = express();
 
-if (process.env.port == undefined) {
-	process.env.port = 3001
-}
-
-if (process.env.host == undefined) {
-	process.env.host = "localhost"
-}
+const port = 3000
+const brains = [
+	'./brain.rive'
+ 	];
 
 
 app.use(bodyParser.json()) 
@@ -28,19 +25,22 @@ app.get('/', (req, res, next)=>{
 	next();
 });
 
-app.post('/', (req,res,next)=>{
+app.post('/:id:idbrain', (req,res,next)=>{
+	id =  parseInt(req.params.id);
+	idbrain = parseInt(req.params.idbrain);
+	brain = listbrain[idbrain];  
 	try{
-		console.log("call to addTask with "+req.body.title)
-		taskServiceInstance.addTask(req.body.title);
+		ChatbotServiceInstance.addChatbot(req.body.title);
 	}catch(e){
 		console.log("An error occured : "+ e);
 	}
 	next();
 })
 
-app.post('/delete',(req,res,next)=>{
+app.delete('/:id',(req,res,next)=>{
+	id = parseInt(req.params.id);
 	try{
-		taskServiceInstance.removeTask(parseInt(req.body.id));
+		ChatbotServiceInstance.removeChatbot(id);
 	}catch(e){
 		console.log("An error occured : "+ e);
 	}
@@ -49,13 +49,13 @@ app.post('/delete',(req,res,next)=>{
 
 
 app.use((req,res,next)=>{
-	res.render('pages/form',{list:taskServiceInstance.getTasks()}); 
+	res.render('pages/form',{list:ChatbotServiceInstance.getChatbots()}); 
 	next();
 })
 
 
-TaskService.create().then(ts=>{
-	taskServiceInstance=ts;
+ChatbotService.create().then(ts=>{
+	ChatbotServiceInstance=ts;
 	app.listen(process.env.port, process.env.host, () => {
   		console.log(`Example app listening at http://${process.env.host}:${process.env.port}`)
 	});

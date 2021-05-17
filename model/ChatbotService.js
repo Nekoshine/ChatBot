@@ -10,7 +10,7 @@ class ChatbotService {
 		return service;
 	}
 
-    addChatbot(name, brain){
+    addChatbot(name, idbrain){
         const id = this.idCpt;
         let newChatbot;
         if (undefined !== (newChatbot = new Chatbot({id:id,name:name, brain:brain}))){
@@ -51,6 +51,11 @@ class ChatbotService {
         let chatbot = this.db.get(idchatbot);
         chatbot.brain = brain;
     }
+
+    addinterfacetoChatbot(idchatbot, inteface){}
+
+    removeinterfacefromChatbot(idchatbot, inteface){}
+    
 }
 
 module.exports = Chatbotservice;
