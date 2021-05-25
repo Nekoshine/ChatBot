@@ -47,7 +47,7 @@ class ChatbotService {
         return(this.db.get(idchatbot));
      }
 
-    changebrainChatbot(idchatbot, brain){
+    changebrainChatbot(idchatbot, idbrain){
         let chatbot = this.db.get(idchatbot);
         chatbot.brain = brain;
     }

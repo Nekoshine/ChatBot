@@ -25,16 +25,26 @@ app.get('/', (req, res, next)=>{
 	next();
 });
 
-app.post('/:id:idbrain', (req,res,next)=>{
-	id =  parseInt(req.params.id);
+app.post('/:name:idbrain', (req,res,next)=>{
+	name =  String(req.params.id);
 	idbrain = parseInt(req.params.idbrain);
 	brain = listbrain[idbrain];  
 	try{
-		ChatbotServiceInstance.addChatbot(req.body.title);
+		ChatbotServiceInstance.addChatbot(name,idbrain);
 	}catch(e){
 		console.log("An error occured : "+ e);
 	}
 	next();
+})
+
+app.put('/:name:idbrain',(req,res,next)=>{
+	id = parseInt(req.params.id);
+	try{
+		ChatbotServiceInstance.changebrainChatbot(id,idbrain);
+	}catch(e){
+		console.log("An error occured : "+ e);
+	}
+	res.redirect("/");
 })
 
 app.delete('/:id',(req,res,next)=>{
@@ -46,6 +56,8 @@ app.delete('/:id',(req,res,next)=>{
 	}
 	res.redirect("/");
 })
+
+
 
 
 app.use((req,res,next)=>{
