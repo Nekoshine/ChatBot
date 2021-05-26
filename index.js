@@ -9,9 +9,7 @@ let ChatbotServiceInstance = new ChatbotService();
 const app = express();
 
 const port = 3000
-const brains = [
-	'./brain.rive'
- 	];
+
 
 
 app.use(bodyParser.json()) 
@@ -37,7 +35,7 @@ app.post('/:name:idbrain', (req,res,next)=>{
 	next();
 })
 
-app.put('/:name:idbrain',(req,res,next)=>{
+app.put('/:id:idbrain',(req,res,next)=>{
 	id = parseInt(req.params.id);
 	try{
 		ChatbotServiceInstance.changebrainChatbot(id,idbrain);
@@ -69,6 +67,6 @@ app.use((req,res,next)=>{
 ChatbotService.create().then(ts=>{
 	ChatbotServiceInstance=ts;
 	app.listen(process.env.port, process.env.host, () => {
-  		console.log(`Example app listening at http://${process.env.host}:${process.env.port}`)
+  		console.log(`Example app listening at http://localhost:${port}`)
 	});
 });

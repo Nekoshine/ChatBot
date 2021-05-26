@@ -14,7 +14,7 @@ class ChatbotService {
         const id = this.idCpt;
         let newChatbot;
         if (undefined !== (newChatbot = new Chatbot({id:id,name:name, brain:brain}))){
-            console.log("just created a chatbot"+newChatbot);
+            console.log("just created a chatbot"+ newChatbot);
             this.db.push(newChatbot);
             this.idCpt++;
         }
