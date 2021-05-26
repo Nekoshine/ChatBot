@@ -19,9 +19,16 @@ app.set('view engine', 'ejs');
 
 
 app.get('/', (req, res, next)=>{
-	//nothing to do
+	try{
+		ChatbotServiceInstance.getChatbots();
+	}catch(e){
+		console.log("An error occured : "+ e);
+	}
 	next();
 });
+
+
+
 
 app.post('/:name:idbrain', (req,res,next)=>{
 	name =  String(req.params.id);
@@ -35,6 +42,10 @@ app.post('/:name:idbrain', (req,res,next)=>{
 	next();
 })
 
+
+
+
+
 app.put('/:id:idbrain',(req,res,next)=>{
 	id = parseInt(req.params.id);
 	try{
@@ -44,6 +55,10 @@ app.put('/:id:idbrain',(req,res,next)=>{
 	}
 	res.redirect("/");
 })
+
+
+
+
 
 app.delete('/:id',(req,res,next)=>{
 	id = parseInt(req.params.id);
@@ -58,10 +73,13 @@ app.delete('/:id',(req,res,next)=>{
 
 
 
+
 app.use((req,res,next)=>{
 	res.render('pages/form',{list:ChatbotServiceInstance.getChatbots()}); 
 	next();
 })
+
+
 
 
 ChatbotService.create().then(ts=>{
