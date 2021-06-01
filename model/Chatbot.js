@@ -1,31 +1,32 @@
 class Chatbot{
-    constructor(data){ //id, name, brain, address, port 
-        if(undefined != data.id){
-            this.id = data.id;
-        }
+    constructor(id,data){ //id, name, brain, address, port 
+        this.id = id;
+
 
         if(undefined != data.name){
             this.title = data.title;
         }
+        else {
+            this.name = "Steve";
+          }
+
+
+
 
         if(undefined != data.brain){
             this.brain = data.brain;
         }
-
-
-        if(undefined != data.address){
-            this.adress = data.address;
-        }
         else {
-            this.address = 'localhost';
-        }
-    
+            this.brain = "";
+            }
+
         
+
         if(undefined != data.port){
             this.port = data.port;
         }
         else{
-            this.port = 3000;
+            this.port = "";
         }
 
     }

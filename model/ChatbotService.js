@@ -1,3 +1,5 @@
+const Chatbot = require("./Chatbot.js");
+const data = require("./db.json");
 
 class ChatbotService {
     constructor(data){
@@ -5,35 +7,55 @@ class ChatbotService {
         this.db = new Map();
     }
 
+    getSize(){
+        this.db.size;
+    }
+
     static create(){ 
 		const service = new Chatbotservice();
 		return service;
 	}
 
-    addChatbot(name, idbrain){
+    addChatbot(chatbot){
         const id = this.idCpt;
-        let newChatbot;
-        if (undefined !== (newChatbot = new Chatbot({id:id,name:name, brain:brain}))){
+        let newChatbot ;
+        if (undefined !== (newChatbot = new Chatbot(id,chatbot))){
             console.log("just created a chatbot"+ newChatbot);
-            this.db.push(newChatbot);
+            this.db.set(newChatbot.id,newChatbot);
             this.idCpt++;
+            return this.db.getChatbot(newChatbot.id);
         }
         else {
             throw Error("Cannot create Chatbot");
         }
     }
 
+    getChatbot(idchatbot){
+        return(this.db.get(idchatbot));
+     }
 
-    removeChatbot(id){
-        let Chatbot = this.db.get(id);
+    deleteChatbot(idchatbot){
+        let Chatbot = this.db.get(idchatbot);
         console.log("Chatbots : " + JSON.stringify(Chatbot));
         if (undefined != Chatbot){
-            this.db.delete(id)
+            this.db.delete(idchatbot);
+            return idchatbot;
         }
         else {
-            throw Error("Failed to delete Chatbot")
+            return undefined;
         }
     }
+
+    updateBot(updatedBot){
+        const hasBot = this.bots.has(updatedBot.id);
+        if(hasBot){
+          this.bots.set(updatedBot.id,updatedBot);
+          return updatedBot;
+        } else {
+          return undefined;
+        }
+    }
+
 
     getChatbots(){
        let tabChatbots = [];
@@ -43,18 +65,10 @@ class ChatbotService {
        return(tabChatbots);
     }
 
-    getChatbot(idchatbot){
-        return(this.db.get(idchatbot));
-     }
-
-    changebrainChatbot(idchatbot, idbrain){
-        let chatbot = this.db.get(idchatbot);
-        chatbot.brain = brain;
+    deleteBots(){
+        this.db.clear();
     }
 
-    addinterfacetoChatbot(idchatbot, inteface){}
-
-    removeinterfacefromChatbot(idchatbot, inteface){}
     
 }
 
