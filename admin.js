@@ -1,6 +1,7 @@
 const express = require('express');
 const ejs = require('ejs');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const process = require('process');
 
 const ChatbotService = require("./model/ChatbotService.js");
@@ -15,7 +16,12 @@ const port = 3000;
 
 app.use(bodyParser.json()) 
 app.use(bodyParser.urlencoded({ extended: true })) 
-
+app.use(cors());
+var corsOptions = {
+  origin: 'http://localhost:'+port,
+  methods: 'GET,POST,PUT,DELETE',
+  optionsSuccessStatus: 200 
+};
 app.set('view engine', 'ejs');
 
 
@@ -31,7 +37,7 @@ app.get('/', function(req, res) {
   
 /*** REQUETES REST ***/
 
-app.get('/bot', function(req,res) {
+app.get('/bot',cors(corsOptions), function(req,res) {
 	try{
 		res.setHeader('Content-Type', 'application/json');	
 		res.json(ChatbotServiceInstance.getChatbots());
@@ -41,7 +47,7 @@ app.get('/bot', function(req,res) {
 	next();
 });
 
-app.get('/bot/:id', function(req,res){
+app.get('/bot/:id',cors(corsOptions), function(req,res){
 	let chatbot = ChatbotServiceInstance.getChatbot(req.params.id);
 	if(undefined != chatbot){
 		res.setHeader('Content-Type', 'application/json');	
@@ -53,7 +59,7 @@ app.get('/bot/:id', function(req,res){
 
 
 
-app.post('/bot', function(req,res){
+app.post('/bot',cors(corsOptions), function(req,res){
 	if(req.is('json')) //on devrait toujours tester le type et aussi la taille!
     {
 		var chatbot = ChatbotServiceInstance.addChatbot(req.body);
@@ -67,7 +73,7 @@ app.post('/bot', function(req,res){
 });
 
 
-app.put('/bot',function(req,res){
+app.put('/bot',cors(corsOptions),function(req,res){
 	if(req.is('json'))
 	{
 		var chatbot = ChatbotServiceInstance.update(req.body);
@@ -86,7 +92,7 @@ app.put('/bot',function(req,res){
 
 
 
-app.delete('/bot/:id',(req,res,next)=>{
+app.delete('/bot/:id',cors(corsOptions),(req,res,next)=>{
 	let id = ChatbotServiceInstance.deleteChatbot(parseInt(req.params.id));
 	if (undefined != id){
 		res.setHeader('Content-Type', 'text/plain');
