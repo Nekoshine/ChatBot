@@ -31,10 +31,18 @@ app.set('view engine', 'ejs');
 
 
 app.get('/', function(req, res) {
-	res.render('admin');
+	res.render('afficher_bot');
  });
  
-  
+app.get('/add', function(req, res){
+	res.render("ajouter_bot")
+});
+
+app.get('/change',function(req,res){
+	res.render('change')
+});
+
+
 /*** REQUETES REST ***/
 
 app.get('/bot',cors(corsOptions), function(req,res) {

@@ -1,0 +1,246 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial;
+    padding: 10px;
+    background: #f1f1f1;
+  }
+  
+
+  /* Header/Blog Title */
+  .header {
+    padding: 30px;
+    text-align: center;
+    background: white;
+  }
+  
+  .header h1 {
+    font-size: 50px;
+  }
+
+  .album li { list-style-type: none;}
+  
+  /* Style the top navigation bar */
+  .topnav {
+    overflow: hidden;
+    background-color: #333;
+  }
+  
+  /* Style the topnav links */
+  .topnav a {
+    float: left;
+    display: block;
+    min-width: 150px;
+    margin : 0.5rem 2rem;
+    padding: 0.4rem 0;
+    color: #f2f2f2;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px; 
+    transition: all 1s;         
+  }
+
+  .topnav input {
+    display: block;
+    min-width:250px;
+    margin : 0.5rem;
+    padding: 0.4rem 0;
+  }
+
+  .topnav button {
+    float: left;
+    display: block;
+    min-width: 150px;
+    margin : 0.5rem;
+    padding: 0.4rem 0;
+    border: none ;
+    color: #f2f2f2;
+    background-color: #333;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px; 
+    transition: all 1s;
+  }
+
+  .lecture{overflow: hidden;
+    background-color: none;}
+  
+  .lecture button {
+      float:right;
+      display: block;
+      min-width: 100px;
+      margin : 0.5rem;
+      padding: 0.4rem 0;
+      border: none ;
+      color: #000000;
+      background-color: none;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 4px; 
+      transition: all 1s;
+    }
+
+    .lecture button:hover {
+      background-color: rgb(214, 10, 112);
+      color: rgb(194, 226, 13);
+    }  
+    
+
+
+
+  /* Change color on hover */
+  .topnav a:hover {
+    background-color: rgb(214, 10, 112);
+    color: rgb(194, 226, 13);
+  }
+  
+  .topnav button:hover {
+    background-color: rgb(214, 10, 112);
+    color: rgb(194, 226, 13);
+  }
+
+  /* Create two unequal columns that floats next to each other */
+  /* Left column */
+  .leftcolumn {   
+    float: left;
+    width: 25%;
+  }
+  
+  /* Right column */
+  .rightcolumn {
+    float: left;
+    width: 75%;
+    background-color: #f1f1f1;
+    padding-left: 20px;
+  }
+
+  .column{
+    float: left;
+    width: 100%;
+    background-color: #f1f1f1;
+    padding-left: 20px;
+  }
+  
+  /* Fake image */
+  .fakeimg {
+    background-color: #aaa;
+    width: 100%;
+    padding: 20px;
+    margin : 1rem;
+    border-radius: 4px;
+  }
+  
+  /* Add a card effect for articles */
+  .card {
+    background-color: white;
+    padding: 20px;
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  .card a {
+    text-decoration: none;
+  } 
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  .carrousel {
+    display: flex;              /* Transformation en flexbox */
+    padding:0;
+    justify-content: center;
+   
+  }
+
+  .carrousel li {
+      list-style-type: none;
+  }
+
+  .elementlist{
+    justify-content: left;
+    }
+
+  .elementlist li {
+      list-style-type: none;
+  }
+
+  .input p{
+    font-size:11px;
+    font-style: italic;
+  }
+
+  .input label{
+    text-decoration: underline  ;
+  }
+
+  label {
+    display: block;
+    font: 1rem 'Fira Sans', sans-serif;
+        }
+
+  input label {
+    margin: .4rem 0;
+}
+
+ 
+
+input{
+	color: black;
+	font-size:16px;
+	border-color:black;
+	border-width: 1.5px;
+	border-radius: 5px;
+	margin : 2% 0px 2% 0px;
+  vertical-align:middle;
+}
+
+select{
+	color: black;
+	font-size:16px;
+	border-color:black;
+	border-width: 1.5px;
+	border-radius: 5px;
+	margin : 2% 0px 2% 0px;
+  vertical-align:middle;
+}
+
+#addbot{
+	
+	
+	display:flex;
+  padding: 1rem;
+	flex-direction: column;
+	width:50%;
+
+}
+
+
+  /* Footer */
+  .footer {
+    padding: 20px;
+    text-align: center;
+    background: #ddd;
+    margin-top: 20px;
+  }
+  
+  /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 800px) {
+    .leftcolumn, .rightcolumn {   
+      width: 100%;
+      padding: 0;
+    }
+  }
+  
+  /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
+  @media screen and (max-width: 400px) {
+    .topnav a {
+      float: none;
+      width: 100%;
+    }
+  }

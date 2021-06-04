@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Deezify</title>
+  <link rel="stylesheet" type="text/css" href="./style.css">
+</head>
+<body>
+
+  <div class="header">
+    <h1>Ajout d'un chatbot </h1>
+  </div>
+  
+  <div class="topnav">
+    <a href="./affiche">Afficher les chatbots</a>
+    <a href="./change">Ajouter un chatbot</a>
+    <a href="#">Modifier / supprimer un chatbot </a> 
+  </div>
+
+  <div class = column>
+    <div class="card">
+      <form action="/bot",method="POST", id = "addbot">
+        
+        <div class = input>
+          <label> Nom du bot : </label>
+          <input type = "text" , id = "name", required>
+        </div>
+
+        <div class = input>
+          <label> Cerveau(x) utilisé(s) : </label>
+          <p> Hold down the Ctrl (windows) / 
+            Command (Mac) button to select multiple options.<p>
+          <select name="brain" id="brain" required multiple ></select>
+        </div>
+
+        <div class = input>
+          <label> Port de connexion : </label>
+          <input type = "text" , id = "port", required>
+        </div>
+
+        <div class = input>
+        <input id="ajouter" type="submit" value="Ajouter le nouveau ChatBot">
+        </div>
+
+      </form>
+    </div>
+  </div>
+</body>
+
+
+  <script src="brain.js"></script>
+ 
+  <script
+    src="https://code.jquery.com/jquery-3.5.1.js">
+  </script>
+
+
+  <script>
+    window.onload = function(){
+      for (var i=0; i<Brain.length; i++) {
+          ajout(Brain[i]["name"],Brain[i]["brain"])
+      };
+    }
+
+    function ajout(value,nom){
+      document.forms.addbot.brain.options[document.forms.addbot.brain.options.length]=new Option(value,nom);
+  };
+  </script>
+
+  
+  
+
