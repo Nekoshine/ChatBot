@@ -16,6 +16,10 @@ class ChatbotService {
 		return service;
 	}
 
+    getChatbot(idchatbot){
+        return(this.db.get(idchatbot));
+     }
+
     addChatbot(chatbot){
         const id = this.idCpt;
         let newChatbot ;
@@ -23,16 +27,14 @@ class ChatbotService {
             console.log("just created a chatbot"+ newChatbot);
             this.db.set(newChatbot.id,newChatbot);
             this.idCpt++;
-            return this.db.getChatbot(newChatbot.id);
+            return this.getChatbot(newChatbot.id);
         }
         else {
             throw Error("Cannot create Chatbot");
         }
     }
 
-    getChatbot(idchatbot){
-        return(this.db.get(idchatbot));
-     }
+    
 
     deleteChatbot(idchatbot){
         let Chatbot = this.db.get(idchatbot);
@@ -59,7 +61,7 @@ class ChatbotService {
 
     getChatbots(){
        let tabChatbots = [];
-       for (const v of this.chatbots.values()){
+       for (const v of this.db.values()){
            tabChatbots.push(v);
        }
        return(tabChatbots);
@@ -69,7 +71,13 @@ class ChatbotService {
         this.db.clear();
     }
 
-    
+    getPort(){
+        let tabPorts = [];
+        for (const v of this.db.values()) {
+          tabPorts.push(v["port"]);
+        }
+        return tabPorts;
+      }
 }
 
 module.exports = ChatbotService;

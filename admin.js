@@ -68,17 +68,23 @@ app.get('/bot/:id',cors(corsOptions), function(req,res){
 
 
 app.post('/bot',cors(corsOptions), function(req,res){
-	console.log(req.body);
-	if(req.is('json')) //on devrait toujours tester le type et aussi la taille!
-    {
-		
-		var chatbot = ChatbotServiceInstance.addChatbot(req.body);
-		res.setHeader('Content-Type', 'application/json');
-        res.json(chatbot);
-        console.log("Done adding "+JSON.stringify(chatbot))
+	var portoccupe = false;
+	const objbot = JSON.parse(JSON.stringify(req.body));
+	var usedport = ChatbotServiceInstance.getPort();
+
+	for (var i = 0; i<usedport.length; i++){
+		if (objbot["port"] == usedport[i]){
+			portoccupe = true;
+		}
 	}
+
+	if (portoccupe){
+		res.send("Erreur: Port déjà utilisé");
+	}
+
 	else{
-		res.send(400, 'Bad Request !');
+		var chatbot = ChatbotServiceInstance.addChatbot(objbot);
+		res.redirect('/')
 	}
 });
 

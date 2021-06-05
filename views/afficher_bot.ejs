@@ -13,6 +13,74 @@
 <div class="topnav">
   <a href="./", class = "link" >Afficher les chatbots</a>
   <a href="./add", class = "link">Ajouter un chatbot</a>
-  <a href="#">Modifier / supprimer un chatbot </a> 
+  <a href="./change">Modifier / supprimer un chatbot </a> 
 </div>
+
+<div id = liste>
+
+</div>
+
+
+
 </body>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+
+<script>
+  function addbotcard(j){
+    card = document.createElement("div")
+    card.className = 'card';
+
+    td1 = document.createElement("td");
+    td1.setAttribute("id", "id" + j);
+    TXT1 = document.createTextNode('Colonne 1');
+    td1.appendChild(TXT1);
+    card.appendChild(td1);
+
+    td2 = document.createElement("td");
+    td2.setAttribute("id", "nom" + j);
+    TXT2 = document.createTextNode('Colonne 2');
+    td2.appendChild(TXT2);
+    card.appendChild(td2);
+
+    td3 = document.createElement("td");
+    td3.setAttribute("id", "cerveau" + j);
+    TXT3 = document.createTextNode('Colonne 3');
+    td3.appendChild(TXT3);
+    card.appendChild(td3);
+
+    td4 = document.createElement("td");
+    td4.setAttribute("id", "port" + j);
+    TXT4 = document.createTextNode('Colonne 4');
+    td4.appendChild(TXT4);
+    card.appendChild(td4);
+
+    document.getElementById("liste").appendChild(card);
+
+  }
+
+</script>
+  
+
+<script>
+
+  window.onload = function(){
+      $.ajax({
+          type: 'GET',
+          url: '/bot',
+          success: (data) => {
+            for (var j = 0; j <data.length ; j++){
+              addbotcard(j);
+              document.getElementById("id" + j).innerHTML = data[j].id;
+              document.getElementById("nom" + j).innerHTML = data[j].name;
+              document.getElementById("cerveau" + j).innerHTML = data[j].brain;
+              document.getElementById("port" + j).innerHTML = data[j].port;
+              console.log(data[j].id);
+            }
+          }
+        })
+      }
+
+</script>

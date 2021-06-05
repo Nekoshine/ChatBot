@@ -4,7 +4,7 @@ class Chatbot{
 
 
         if(undefined != data.name){
-            this.title = data.title;
+            this.name = data.name;
         }
         else {
             this.name = "Steve";
@@ -31,3 +31,5 @@ class Chatbot{
 
     }
 }
+
+module.exports = Chatbot;
