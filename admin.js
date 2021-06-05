@@ -34,7 +34,11 @@ app.set('view engine', 'ejs');
 app.get('/', function(req, res) {
 	res.render('afficher_bot');
  });
- 
+
+app.get('/user', function(req, res) {
+	res.render('client');
+});
+
 app.get('/add', function(req, res){
 	res.render("ajouter_bot")
 });
@@ -43,6 +47,9 @@ app.get('/change',function(req,res){
 	res.render('change')
 });
 
+app.get('/chat', function(req, res){
+	res.render("chat_bot")
+});
 
 /*** REQUETES REST ***/
 

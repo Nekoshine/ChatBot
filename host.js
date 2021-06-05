@@ -40,7 +40,7 @@ function chat(port,brain){
 
     run(port);
 
-    app.post('/', cors(corsOptions), function(req, res) {
+    app.post('/user', cors(corsOptions), function(req, res) {
         var host = req.headers["host"];
         var p = host.split(':');
         port=p[1];
