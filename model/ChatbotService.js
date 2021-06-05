@@ -12,7 +12,7 @@ class ChatbotService {
     }
 
     static create(){ 
-		const service = new Chatbotservice();
+		const service = new ChatbotService();
 		return service;
 	}
 
@@ -72,4 +72,4 @@ class ChatbotService {
     
 }
 
-module.exports = Chatbotservice;
+module.exports = ChatbotService;

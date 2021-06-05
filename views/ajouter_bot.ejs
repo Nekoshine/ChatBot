@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Deezify</title>
-  <link rel="stylesheet" type="text/css" href="./style.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 
@@ -11,18 +11,18 @@
   </div>
   
   <div class="topnav">
-    <a href="./affiche">Afficher les chatbots</a>
-    <a href="./change">Ajouter un chatbot</a>
-    <a href="#">Modifier / supprimer un chatbot </a> 
+    <a href="./" class = "link" >Afficher les chatbots</a>
+    <a href="./change" class = "link" >Ajouter un chatbot</a>
+    <a href="#" class = "link"  >Modifier / supprimer un chatbot </a> 
   </div>
 
   <div class = column>
     <div class="card">
-      <form action="/bot",method="POST", id = "addbot">
+      <form action="/bot",method="POST", name = "addbot">
         
         <div class = input>
           <label> Nom du bot : </label>
-          <input type = "text" , id = "name", required>
+          <input type = "text" , name = "name", required>
         </div>
 
         <div class = input>
@@ -34,12 +34,18 @@
 
         <div class = input>
           <label> Port de connexion : </label>
-          <input type = "text" , id = "port", required>
+          <input type = "text" , name = "port", required>
         </div>
 
         <div class = input>
         <input id="ajouter" type="submit" value="Ajouter le nouveau ChatBot">
         </div>
+
+        <div class = input>
+        <input type="hidden", name="error",id="error", value=error, disabled>
+        </div>
+
+        <a href="./", class="link"> Retour </a> 
 
       </form>
     </div>
@@ -49,16 +55,15 @@
 
   <script src="brain.js"></script>
  
-  <script
-    src="https://code.jquery.com/jquery-3.5.1.js">
-  </script>
-
-
   <script>
     window.onload = function(){
       for (var i=0; i<Brain.length; i++) {
           ajout(Brain[i]["name"],Brain[i]["brain"])
       };
+
+      if( document.getElementById("error").value != ""){
+        alert("Le port demandé est déjà utilisé");
+    };
     }
 
     function ajout(value,nom){

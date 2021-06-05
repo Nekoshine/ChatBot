@@ -16,6 +16,7 @@ const port = 3000;
 
 app.use(bodyParser.json()) 
 app.use(bodyParser.urlencoded({ extended: true })) 
+app.use(express.static('public'))
 app.use(cors());
 var corsOptions = {
   origin: 'http://localhost:'+port,
@@ -52,7 +53,6 @@ app.get('/bot',cors(corsOptions), function(req,res) {
 	}catch(e){
 		console.log("An error occured : "+ e);
 	}
-	next();
 });
 
 app.get('/bot/:id',cors(corsOptions), function(req,res){
@@ -68,12 +68,14 @@ app.get('/bot/:id',cors(corsOptions), function(req,res){
 
 
 app.post('/bot',cors(corsOptions), function(req,res){
+	console.log(req.body);
 	if(req.is('json')) //on devrait toujours tester le type et aussi la taille!
     {
+		
 		var chatbot = ChatbotServiceInstance.addChatbot(req.body);
 		res.setHeader('Content-Type', 'application/json');
         res.json(chatbot);
-        console.log("Done adding "+JSON.stringify(chatbot) );
+        console.log("Done adding "+JSON.stringify(chatbot))
 	}
 	else{
 		res.send(400, 'Bad Request !');
@@ -115,9 +117,7 @@ app.delete('/bot/:id',cors(corsOptions),(req,res,next)=>{
 
 /*** LANCEMENT DU SERVEUR ***/
 
-ChatbotService.create().then(ts=>{
-	ChatbotServiceInstance=ts;
-	app.listen(process.env.port, process.env.host, () => {
+
+	app.listen(port, () => {
   		console.log(`Example app listening at http://localhost:${port}`)
 	});
-});
