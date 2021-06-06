@@ -9,16 +9,18 @@ app.use(bodyParser.json());
 app.set('view engine','ejs');
 
 var bot = [];
+var serverBot = [];
 
 function lancementServBot(port,brain){
     bot[port] = new RiveScript();
     var corsOptions = {
-      origin: 'http://localhost:'+port,
+      origin: 'http://localhost:'+port+'/chat',
       methods: 'GET,POST,PUT,DELETE',
       optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
     };
     var type = typeof brain;
-    if(brain == "string"){
+    console.log(type);
+    if(type == "string"){
         if(brain!=""){
             bot[port].loadFile(brain).then(loading_done).catch(loading_error);
         }
@@ -32,15 +34,14 @@ function lancementServBot(port,brain){
     }
     bot[port].sortReplies();
 
-    app.get('/user', cors(corsOptions), function(req, res) {
-        var json = { "reponse" : ""};
-        res.render('chat', { "bot" : json});
-        //res.render('chat');
+    app.get('/chat', cors(corsOptions), function(req, res) {
+     
+        res.render('chat_bot', );
     });
 
     run(port);
 
-    app.post('/user', cors(corsOptions), function(req, res) {
+    app.post('/chat', cors(corsOptions), function(req, res) {
         var host = req.headers["host"];
         var p = host.split(':');
         port=p[1];
@@ -50,7 +51,7 @@ function lancementServBot(port,brain){
             console.log("The bot says: " + reply);
             //res.send(reply);
             var json = {"message": obj["message"], "reponse" : reply};
-            res.render('chat', { "bot" : json});
+            res.render('chat_bot', { "bot" : json});
 
         });
     });
@@ -66,11 +67,11 @@ function lancementServBot(port,brain){
 };
     function stop(port){
          console.log("clossing");
-         server[port].close();
+         serverBot[port].close();
     };
 
     function run(port){
-        server[port] = app.listen(port, function () {
+        serverBot[port] = app.listen(port, function () {
           console.log('Started listening on : '+port);
         });
     };

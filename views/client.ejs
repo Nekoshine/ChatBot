@@ -77,7 +77,8 @@
     but1 = document.createElement("button");
     but1.addEventListener ("click", function() {
      console.log("J'AI CLICK SUR LE BOT "+data[j].port);
-     window.location = "http://localhost:"+data[j].port; 
+     console.log("http://localhost:"+data[j].port+"/chat");
+     window.location = "http://localhost:"+data[j].port+"/chat"; 
     });
     but1.setAttribute("id", "button" + j);
     BUT1 = document.createTextNode('Se connecter à ce bot');
@@ -106,7 +107,6 @@
               document.getElementById("cerveau" + j).innerHTML = data[j].brain;
               document.getElementById("port" + j).innerHTML = data[j].port;
             
-              console.log(data[j].id);
             }
           }
         })
