@@ -8,10 +8,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.set('view engine','ejs');
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({extended : true}))
 
 var bot = [];
 var serverBot = [];
-
+var data = Array()
 function lancementServBot(port,brain){
     bot[port] = new RiveScript();
     var corsOptions = {
@@ -36,23 +37,20 @@ function lancementServBot(port,brain){
     bot[port].sortReplies();
 
     app.get('/chat', cors(corsOptions), function(req, res) {
-     
-        res.render('chat_bot', );
+        var json = {"message": "Bonjour humain je suis un robot", "reponse" : ""}; 
+        data.push(json);
+        res.render('chat_bot',{list : data});
     });
 
     run(port);
 
-    app.post('/chat', cors(corsOptions), function(req, res) {
-        var host = req.headers["host"];
-        var p = host.split(':');
-        port=p[1];
-        const obj = JSON.parse(JSON.stringify(req.body));
-        console.log("Human says : "+obj["message"]);
-        bot[port].reply("local-user", obj["message"]).then(function(reply) {
-            console.log("The bot says: " + reply);
-            //res.send(reply);
-            var json = {"message": obj["message"], "reponse" : reply};
-            res.render('chat_bot', { "bot" : json});
+    app.post('/chat', cors(corsOptions), function (req, res)  {
+               
+        const message = JSON.parse(JSON.stringify(req.body));
+        bot[port].reply("Utilisateur", message["message"]).then(function(reply) {
+            var json = {"message": message["message"], "reponse" : reply};
+            data.push(json);
+            res.render('chat_bot', { list : data});
 
         });
     });

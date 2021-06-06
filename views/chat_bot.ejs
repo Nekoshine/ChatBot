@@ -13,11 +13,25 @@
 <div class="topnav">
   <a href="http://localhost:3000/user", class = "link" >Revenir aux chatbots</a>
 </div>
+<main>
+<div class = "discussion">
 
-<div id = liste>
+  <div>
+    <ul>
+      <% list.forEach(function(dataMessage) { %>
+        <li> <%= "Bot : "+  dataMessage.message %></li>
+        <li> <%= "Utilisateur : " + dataMessage.reponse %></li>
+        <% }); %>
+      </ul>
+    </div>
+    
+<form action="/chat" method="POST"> 
+    <input type = "text"  name="message" />
+    <input type="submit"/>    
+</form>
 
 </div>
-
+</main>
 </body>
 
 
