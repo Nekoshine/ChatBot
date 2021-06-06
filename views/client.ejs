@@ -27,7 +27,7 @@
 
 
 <script>
-  function addbotcard(j){
+  function addbotcard(data,j){
     card = document.createElement("div")
     card.className = 'card';
 
@@ -53,7 +53,8 @@
 
     but1 = document.createElement("button");
     but1.addEventListener ("click", function() {
-     console.log("J'AI CLICK SUR LE BOT "+j);
+     console.log("J'AI CLICK SUR LE BOT "+data[j].port);
+     window.location = "http://localhost:"+data[j].port; 
     });
     but1.setAttribute("id", "button" + j);
     BUT1 = document.createTextNode('Se connecter à ce bot');
@@ -75,7 +76,7 @@
           url: '/bot',
           success: (data) => {
             for (var j = 0; j <data.length ; j++){
-              addbotcard(j);
+              addbotcard(data,j);
               console.log(data[j].id);
               document.getElementById("id" + j).innerHTML = data[j].id;
               document.getElementById("nom" + j).innerHTML = data[j].name;

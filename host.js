@@ -10,7 +10,7 @@ app.set('view engine','ejs');
 
 var bot = [];
 
-function chat(port,brain){
+function lancementServBot(port,brain){
     bot[port] = new RiveScript();
     var corsOptions = {
       origin: 'http://localhost:'+port,
@@ -18,7 +18,7 @@ function chat(port,brain){
       optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
     };
     var type = typeof brain;
-    if(type=="string"){
+    if(brain == "string"){
         if(brain!=""){
             bot[port].loadFile(brain).then(loading_done).catch(loading_error);
         }
@@ -32,7 +32,7 @@ function chat(port,brain){
     }
     bot[port].sortReplies();
 
-    app.get('/', cors(corsOptions), function(req, res) {
+    app.get('/user', cors(corsOptions), function(req, res) {
         var json = { "reponse" : ""};
         res.render('chat', { "bot" : json});
         //res.render('chat');
@@ -75,6 +75,6 @@ function chat(port,brain){
         });
     };
 
-module.exports.chat = chat;
+module.exports.lancementServBot = lancementServBot;
 module.exports.run = run;
 module.exports.stop = stop;

@@ -3,6 +3,7 @@ const ejs = require('ejs');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const process = require('process');
+var host = require('./host.js');
 
 const ChatbotService = require("./model/ChatbotService.js");
 
@@ -91,6 +92,7 @@ app.post('/bot',cors(corsOptions), function(req,res){
 
 	else{
 		var chatbot = ChatbotServiceInstance.addChatbot(objbot);
+		host.lancementServBot(objbot["port"],objbot["brain"]);
 		res.redirect('/')
 	}
 });
