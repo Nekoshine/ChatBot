@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Services Web</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+<div class="header">
+  <h1>Interface de modification et/ou suppression </h1>
+</div>
+
+<div class="topnav">
+  <a href="./", class = "link" >Afficher les chatbots</a>
+  <a href="./add", class = "link">Ajouter un chatbot</a>
+  <a href="./change">Modifier / supprimer un chatbot </a> 
+</div>
+
+<div class = "card">
+  <form action = "/bot" , method = "POST", name = informationbot>
+    
+    <div>
+      <label>Id :</label>
+      <select name = 'id' , id = 'id', onchange= "cherche_bot()"></select>
+    </div>
+
+    <div>
+      <label>Name :</label>
+      <input type="text",name="name",id = "name">
+    </div>
+
+    <div id= "brains">
+      <label>Cerveau :</label>
+      <select id="brain", style="visibility : hidden">
+        <option value= ""></option>
+      </select>
+      
+    </div>
+
+    <div>
+      <label>Port :</label>
+      <input type="text",name="port",id = "port">
+    </div>
+
+    <div>
+        <button class = "modify" onclick= "formater()">Modifier</button>
+        <button class = "delete" >Supprimer</button>
+    </div>
+
+    <div>
+      <label>Cerveau à ajouter :</label>
+      <select id="addbrain", name = "addbrain">
+        <option value= ""></option>
+        <button class = "addbarin">ajouter le cerveau</button>
+      </select>
+      
+    </div>
+  </form>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="brain.js",type="text/javascript"></script>
+
+<script>
+  var format = {};
+
+  $(document).ready(function(){
+    $('.delete').on("click",function(e){
+        e.preventDefault();
+        var id = $('#id').val();
+        $.ajax({
+          type: "DELETE",
+          url : "/bot/" + id,
+        });
+        window.location.reload();
+      });
+
+    $('.modify').on("click",function(e){
+      e.preventDefault();
+      var id = $('#id').val();
+      $.ajax({
+        type: "PUT",
+        url : "/bot/",
+        data : JSON.stringify(donnee),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+      });
+      window.location.reload();
+    });
+
+
+
+
+  })
+
+
+
+
+
+
+  function remplir_nom(name){
+    document.forms.informationbot.name.value = name
+  }
+
+  function remplir_port(port){
+    document.forms.informationbot.port.value = port
+  }
+
+
+  function optionid(id){
+    document.forms.informationbot.id.options[document.forms.informationbot.id.options.length] = new Option(id,id);
+  }
+
+  function optionbrain(value,nom){
+    document.forms.listebot.brain.options[document.forms.listebot.brain.options.length]=new Option(value,nom);
+    document.forms.listebot.brainadd.options[document.forms.listebot.brainadd.options.length]=new Option(value,nom);
+    };
+
+
+
+
+  function cherche_bot(){
+    var id = $("#id").val();
+    $.ajax({
+      type: "GET",
+      url: "/bot/" + id,
+      success : (data) => {
+        remplir_nom(data["name"]);
+        remplir_port(data["port"]);
+        remplir_brain(data["brain"]);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  };
+
+  function formater(){
+    var tabbrain = [];
+    format.id = parseInt(document.getElementById("id").value);
+    format.name = document.getElementById("name").value;
+    format.brain = "";
+    format.port = parseInt(document.getElementById("port").value);
+
+    var brains = document.getElementByName("brain");
+    for (var i=0; i<brains.length;i++){
+      tabbrain.push(brains[i].option[brains[i].options.selectedIndex].value);
+    }
+    format.brain =tabbrain;  
+  };
+
+ 
+
+
+
+ 
+
+</script>

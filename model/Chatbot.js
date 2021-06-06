@@ -1,5 +1,5 @@
 class Chatbot{
-    constructor(id,data){ //id, name, brain, address, port 
+    constructor(data){ //id, name, brain, address, port 
         this.id = id;
 
 
