@@ -188,7 +188,14 @@
     margin: .4rem 0;
 }
 
- 
+.customdiv{
+  display: flex;
+  padding: 0.5rem;
+}
+
+.customdiv label{
+  margin : 0.2rem;
+}
 
 input{
 	color: black;

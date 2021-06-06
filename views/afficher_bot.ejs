@@ -33,29 +33,48 @@
     card = document.createElement("div")
     card.className = 'card';
 
-    td1 = document.createElement("td");
-    td1.setAttribute("id", "id" + j);
-    TXT1 = document.createTextNode('Colonne 1');
-    td1.appendChild(TXT1);
-    card.appendChild(td1);
+    div1 = document.createElement("div");
+    div1.className = 'customdiv';
+    idlabel = document.createElement("label");
+    idlabel.innerHTML = "Id : ";
+    id = document.createElement("label");
+    id.setAttribute("id", "id" + j);
+    div1.appendChild(idlabel)
+    div1.appendChild(id)
+    card.appendChild(div1);
 
-    td2 = document.createElement("td");
-    td2.setAttribute("id", "nom" + j);
-    TXT2 = document.createTextNode('Colonne 2');
-    td2.appendChild(TXT2);
-    card.appendChild(td2);
+    
+    div2 = document.createElement("div");
+    div2.className = 'customdiv';
+    namelabel = document.createElement("label");
+    namelabel.innerHTML = "Name : ";
+    botname = document.createElement("label");
+    botname.setAttribute("id", "nom" + j);
+    div2.appendChild(namelabel)
+    div2.appendChild(botname)
+    card.appendChild(div2);
 
-    td3 = document.createElement("td");
-    td3.setAttribute("id", "cerveau" + j);
-    TXT3 = document.createTextNode('Colonne 3');
-    td3.appendChild(TXT3);
-    card.appendChild(td3);
 
-    td4 = document.createElement("td");
-    td4.setAttribute("id", "port" + j);
-    TXT4 = document.createTextNode('Colonne 4');
-    td4.appendChild(TXT4);
-    card.appendChild(td4);
+    div3 = document.createElement("div");
+    div3.className = 'customdiv';
+    brainlabel = document.createElement("label");
+    brainlabel.innerHTML = "Brains : ";
+    brains = document.createElement("label");
+    brains.setAttribute("id", "cerveau" + j);
+    div3.appendChild(brainlabel)
+    div3.appendChild(brains)
+    card.appendChild(div3);
+
+
+    div4 = document.createElement("div");
+    div4.className = 'customdiv';
+    portlabel = document.createElement("label");
+    portlabel.innerHTML = "Port :";
+    port = document.createElement("label");
+    port.setAttribute("id", "port" + j);
+    div4.appendChild(portlabel)
+    div4.appendChild(port)
+    card.appendChild(div4);
 
     document.getElementById("liste").appendChild(card);
 
