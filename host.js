@@ -7,6 +7,7 @@ var cors = require('cors');
 app.use(cors());
 app.use(bodyParser.json());
 app.set('view engine','ejs');
+app.use(express.static('public'));
 
 var bot = [];
 var serverBot = [];
