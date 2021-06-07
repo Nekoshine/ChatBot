@@ -8,7 +8,7 @@ Brain =  [
 	{
 		"name" : "Test",
 		"brain" : "./brains/test.rive",
-	}
+	},
 
 	{ 
 		"name" : "Tuto",
