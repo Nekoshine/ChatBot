@@ -7,12 +7,13 @@ var cors = require('cors');
 app.use(cors());
 app.use(bodyParser.json());
 app.set('view engine','ejs');
-app.use(express.static('public'));
+app.use(express.static('./public'));
 app.use(bodyParser.urlencoded({extended : true}))
 
 var bot = []; //Tableau qui contient les bots
 var serverBot = []; //Tableau qui contient les serveurs des bots
 var data = Array(); //Tableau qui contient les donneés échangées
+var cptMessages =0;
 /*
 Fonction qui va permettre de lancer le bot sur un serveur à part avec un port et un/des cerveau/x spécifié/s.
 */
@@ -40,20 +41,23 @@ function lancementServBot(port,brain){
     run(port); //Lancement du serveur
 
     // Lors d'une requête get sur la page du bot, on va donc pré-répondre pour accueillir l'utilisateur
-    app.get('/chat', cors(corsOptions), function(req, res) {
+    app.get('/chat/:nom', cors(corsOptions), function(req, res) {
         data =[] //Stockage du message
-        var json = {"message": "", "reponse" : "Bonjour humain je suis un robot"}; //Message à envoyer à l'ejs
+        nomUser = req.params.nom;
+        var json = {"message": "", "reponse" : "Bonjour "+ nomUser + " je suis un robot", "cpt": cptMessages}; //Message à envoyer à l'ejs
         data.push(json);
         res.render('chat_bot',{list : data}); 
     });
 
     //Lors d'une requête post, cela signifie que l'utilisateur dialogue avec le bot il faut donc préparer la réponse du bot en fonction du cerveau 
     app.post('/chat', cors(corsOptions), function (req, res)  {
-        console.log(req.headers["host"].split(':'));
+        cptMessages++;
         portCerveau = req.headers["host"].split(':')[1]; //On isole le port du bot pour le retrouver dans le tableau
         const message = JSON.parse(JSON.stringify(req.body));
+        console.log(message);
         bot[portCerveau].reply("Utilisateur", message["message"]).then(function(reply) { //On construit la réponse du bot en fournissant le message envoyé par l'utilisateur
-            var json = {"message": message["message"], "réponse" : reply}; //On met en forme la réponse
+            var json = {"message": message["message"], "reponse" : reply,"cpt" : cptMessages}; //On met en forme la réponse
+            console.log(reply);
             data.push(json);
             res.render('chat_bot', { list : data}); //On envoie le tout à l'affichage
         });

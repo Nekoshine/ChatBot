@@ -15,36 +15,27 @@
   <a href="./add", class = "link">Ajouter un chatbot</a>
   <a href="./change">Modifier / supprimer un chatbot </a> 
 </div>
-
 <div class = "card">
-  <form action = "/bot" , method = "POST", name = informationbot>
-    
+  <form action = "/bot" , method = "POST", name = informationbot>    
     <div>
       <label>Id :</label>
       <select name = 'id' , id = 'id', onchange= "recuperer_attribut_bot()"></select>   <!-- la focntion est appelé chque fois que le champs du select est modifié -->
     </div>
-
     <div>
       <label>Name :</label>
       <input type="text" id="name" name="name">
     </div>
-
     <div id= "cerveaux">
       <label>Cerveau :</label>
     </div>
-
     <div>
       <label>Port :</label>
       <input type="text" id="port" name="port">
     </div>
-
-    <div>
-        
+    <div>        
         <button class = "modifier">Modifier</button>
-        <button class = "supprimer">Supprimer</button>
-        
+        <button class = "supprimer">Supprimer</button>        
     </div>
-
     <div>
       <label>Cerveau à ajouter :</label>
       <select id="select_ajouter_nouveau_cerveau", name = "select_ajouter_nouveau_cerveau">
@@ -55,18 +46,13 @@
     </div>
   </form>
 </div>
-
-
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="brain.js",type="text/javascript"></script>
-
-
 
 <script>
   var format = {};
 
 // action sur les boutons onclick declenchant respectivement la suppression, la modification et l'ajout d'un cerveau 
-
   $(document).ready(function(){
     $('.supprimer').on("click",function(e){
         e.preventDefault();
@@ -80,9 +66,7 @@
           error: (err) => {
             console.log(err);
           }
-        });
-
-        
+        });        
       });
 
     $('.modifier').on("click",function(e){
@@ -108,9 +92,7 @@
       e.preventDefault();
       var id = $('#id').val();     //on recupère l'id courant dans le formaulaire
       $.ajax({                     //on effectue un requete GET avec cet id en paramètre afin de récuperer le json du bot correspondant
-        type: 'GET',
-        url : "/bot/" + id,
-        success: (data) => {
+        type: 'GET',url : "/bot/" + id,success: (data) => {
           console.log(data);
           ajouterCerveau(data); // on appelle la fonction ajouterCerveau avec ce json récuperé
         },
@@ -152,13 +134,11 @@
     data.brain = ens_cerveau;}
 
     $.ajax({
-      type: 'PUT',
-      url: '/bot/',                                                //enfin on effectue une requete PUT afin d'enregistrer la modification 
+      type: 'PUT', url: '/bot/',        //enfin on effectue une requete PUT afin d'enregistrer la modification 
       data : JSON.stringify(data),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      success: (data) =>{
-        
+      success: (data) =>{               
         console.log(data);},
       error: (err) => {
         console.log(err);
@@ -166,10 +146,6 @@
     })
   }
 }
-
-
-
-
 
   var div = document.getElementById('cerveaux');
   var liste = document.getElementById('liste');
@@ -207,8 +183,7 @@
       
       divlist.appendChild(nom_cerveau)
     }
-    else{
-        
+    else{        
         for(var i=0; i<cerveau.length; i++){
           nom_cerveau = document.createElement("input");
           nom_cerveau.type = "text"                                     //si il y a une liste de cerveau
@@ -222,7 +197,6 @@
     div.appendChild(divlist);
     };
 
-
   //remplit les options du menu deroulant des id 
 
   function optionid(id){
@@ -231,8 +205,7 @@
 
   //remplit les options du menu deroulant des cerveaux pour l'ajout d'un nouveau cerveau
 
-  function optioncerveau(value,nom){
-   
+  function optioncerveau(value,nom){   
     document.forms.informationbot.select_ajouter_nouveau_cerveau.options[document.forms.informationbot.select_ajouter_nouveau_cerveau.options.length]=new Option(value,nom);
     };
 
@@ -245,7 +218,6 @@
       type: "GET",  
       url: "/bot/" + id,                      //Requete GET afin de récupérer le json correpondnat à l'id 
       success : (data) => {
-
         remplir_nom(data["name"]);            // puis affichage des differents attributs 
         remplir_port(data["port"]);
         remplir_cerveau(data["brain"]);
@@ -265,9 +237,7 @@
     format.name = document.getElementById("name").value;
     format.brain = "";                                                  //extraction des donnees
     format.port = parseInt(document.getElementById("port").value);
-
     var cerveaux = document.getElementsByName("nom_cerveau");
-
     for (var i=0; i<cerveaux.length;i++){
       script = cerveaux[i].value                                        //traitement plus spécifique pour les cerveaux 
       tabcerveau.push(script);
@@ -275,15 +245,7 @@
     format.brain =tabcerveau;  
   };
 
-
-
- 
-
-  
-
-
-//affichage au chargement de la page 
- 
+//affichage au chargement de la page  
   window.onload = function(){
     $.ajax({
         type: 'GET',
@@ -298,14 +260,9 @@
             console.log(err);
         }
         })
-
     for (var i=0; i<Brain.length; i++) {
         optioncerveau(Brain[i]["name"],Brain[i]["brain"]);
 
     };
 }
-
-
- 
-
 </script>

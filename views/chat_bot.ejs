@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Services Web</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>
 
@@ -18,14 +18,17 @@
 
   <div class = chat>
     <ul> <!-- Ici on va récupérer les messages fournis dans la requête pour construire l'affichage-->
-      <% list.forEach(function(dataMessage) { %> <!-- Pour chaque élément dans la liste fournie -->
-        <div class=human> <%= dataMessage.message %></div> <!-- On affiche le message envoyé par l'humain-->
-        <div class=bot> <%= dataMessage.reponse %></div> <!-- On affiche la réponse du chatbot-->
-        <% }); %>
+      <% list.forEach(function(dataMessage) { <!-- Pour chaque élément dans la liste fournie -->
+        if( dataMessage.cpt == 0){ %> <!-- Si c'est le premier message on affiche pas la bulle de l'humain -->
+          <div class=bot> <%=  dataMessage.reponse %></div> <!-- On affiche la réponse du chatbot-->          
+          <%  }else{%> 
+        <div class=human> <%=  dataMessage.message %></div> <!-- On affiche le message envoyé par l'humain-->
+        <div class=bot> <%=  dataMessage.reponse %></div> <!-- On affiche la réponse du chatbot-->
+        <%}}); %>
       </ul>
   </div>
     
-<form class= "zdt" action="/chat" method="POST"> 
+<form class= "zdt" action="/chat/" method="POST"> 
     <input type = "text"  name="message" />
     <input type="submit"/>    
 </form>

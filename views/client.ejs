@@ -13,17 +13,16 @@
 <div class="topnav">
   <a href="./user", class = "link" >Revenir aux chatbots</a>
 </div>
-
-<div id = liste>
-
+<div class ="champsNom">
+  <p>Veuillez renseigner votre nom avant de choisir un chatbot : </p>
+  <input type ="text" id="nom" placeholder="Entrez votre nom svp" />
 </div>
-
-
+<div id = liste>
+  
+</div>
 
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-
-
 <script>
   //Fonction qui va ajouter les bots au chargement dans des cartes différentes
   function addBotCard(data,j){
@@ -75,9 +74,9 @@
 
     but1 = document.createElement("button");
     but1.addEventListener ("click", function() { //Lorsqu'on clique sur le bouton dans la carte, on va être redirigé vers la page du bot
-     console.log("J'AI CLICK SUR LE BOT "+data[j].port);
      console.log("http://localhost:"+data[j].port+"/chat");
-     window.location = "http://localhost:"+data[j].port+"/chat"; 
+     nomUser = document.getElementById("nom").value;
+     window.location = "http://localhost:"+data[j].port+"/chat/"+nomUser ; 
     });
     but1.setAttribute("id", "button" + j);
     BUT1 = document.createTextNode('Se connecter à ce bot');
@@ -88,8 +87,7 @@
 
   }
 
-</script>
-  
+</script> 
 
 <script>
   //Lors du chargement de la page on va aller récupérer les données sur une autre page pour les charger, ici on récupère tout les bots et leurs informations
