@@ -2,7 +2,7 @@
 Brain =  [
 	{
 		"name" : "Standart",
-		"brain" : "./brains/standart.rive",
+		"brain" : "./brains/standard.rive",
 	},
 
 	{
