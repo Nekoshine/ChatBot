@@ -78,10 +78,10 @@ app.get('/bot/:id',cors(corsOptions), function(req,res){
 app.post('/bot',cors(corsOptions), function(req,res){
 	var portoccupe = false;
 	const objbot = JSON.parse(JSON.stringify(req.body));
-	var usedport = ChatbotServiceInstance.getPort();
+	var portsutilises = ChatbotServiceInstance.getPort();
 
-	for (var i = 0; i<usedport.length; i++){
-		if (objbot["port"] == usedport[i]){
+	for (var i = 0; i<portsutilises.length; i++){
+		if (objbot["port"] == portsutilises[i]){
 			portoccupe = true;
 		}
 	}
