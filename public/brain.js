@@ -1,7 +1,7 @@
 
 Brain =  [
 	{
-		"name" : "Standart",
+		"name" : "Standard",
 		"brain" : "./brains/standard.rive",
 	},
 
