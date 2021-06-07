@@ -16,7 +16,7 @@ class ChatbotService {
 		return service;
 	}
 
-    getChatbot(idchatbot){
+    getChatbot(idchatbot){        
         return(this.db.get(idchatbot));
      }
 
@@ -49,9 +49,9 @@ class ChatbotService {
     }
 
     updateBot(updatedBot){
-        const hasBot = this.bots.has(updatedBot.id);
+        const hasBot = this.db.has(updatedBot.id);
         if(hasBot){
-          this.bots.set(updatedBot.id,updatedBot);
+          this.db.set(updatedBot.id,updatedBot);
           return updatedBot;
         } else {
           return undefined;

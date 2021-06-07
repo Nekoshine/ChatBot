@@ -45,7 +45,7 @@ app.get('/add', function(req, res){
 });
 
 app.get('/change',function(req,res){
-	res.render('change')
+	res.render('modifier_supprimer_bot')
 });
 
 app.get('/chat', function(req, res){
@@ -64,7 +64,7 @@ app.get('/bot',cors(corsOptions), function(req,res) {
 });
 
 app.get('/bot/:id',cors(corsOptions), function(req,res){
-	let chatbot = ChatbotServiceInstance.getChatbot(req.params.id);
+	let chatbot = ChatbotServiceInstance.getChatbot(parseInt(req.params.id));
 	if(undefined != chatbot){
 		res.setHeader('Content-Type', 'application/json');	
 		res.json(chatbot);
@@ -101,17 +101,18 @@ app.post('/bot',cors(corsOptions), function(req,res){
 app.put('/bot',cors(corsOptions),function(req,res){
 	if(req.is('json'))
 	{
-		var chatbot = ChatbotServiceInstance.update(req.body);
-		if(undefined != chatbot){
-			res.setHeader('Content-Type', 'application/json');
-			res.json(chatbot);
-			console.log("Done updating "+JSON.stringify(todo));
-		}
-		else{
-			res.status(404).send('Page introuvable !');
-	}
-}
-})
+		
+			var chatbot = ChatbotServiceInstance.updateBot(req.body);
+			if(undefined != chatbot){
+				res.setHeader('Content-Type', 'application/json');
+				res.json(chatbot);
+				console.log("Done updating "+JSON.stringify(chatbot));
+			}
+			else{
+				res.status(404).send('Page introuvable !');
+				}
+			}
+	})
 
 
 
@@ -121,10 +122,11 @@ app.delete('/bot/:id',cors(corsOptions),(req,res,next)=>{
 	let id = ChatbotServiceInstance.deleteChatbot(parseInt(req.params.id));
 	if (undefined != id){
 		res.setHeader('Content-Type', 'text/plain');
-		res.send(200,'OK');
+		res.status(200).send('OK');
+		console.log("Done deleting")
 	}
 	else{
-		res.send(404, 'Page introuvable !');
+		res.status(404).send('Page introuvable !');
 	}
 })
 
