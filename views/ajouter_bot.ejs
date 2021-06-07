@@ -27,8 +27,7 @@
 
         <div class = input>
           <label> Cerveau(x) utilisé(s) : </label>
-          <p> Hold down the Ctrl (windows) / 
-            Command (Mac) button to select multiple options.<p>
+          <p> Ctrl + click pour sélectionner plusieurs cerveaux <p>
           <select name="brain" id="brain" required multiple ></select>
         </div>
 
@@ -56,6 +55,7 @@
   <script src="host.js"></script>
  
   <script>
+    //On va aller chercher dans le fichier brain.js le chemin des cerveaux ainsi que leurs nom pour pouvoir les afficher dans la liste déroulante
     window.onload = function(){
       for (var i=0; i<Brain.length; i++) {
           ajout(Brain[i]["name"],Brain[i]["brain"])
@@ -65,7 +65,7 @@
         alert("Le port demandé est déjà utilisé");
     };
     }
-
+    //Fonction qui va permettre d'ajouter dans la liste déroulante les cerveaux ne tant que nouvelle option
     function ajout(value,nom){
       document.forms.addbot.brain.options[document.forms.addbot.brain.options.length]=new Option(value,nom);
   };

@@ -26,14 +26,14 @@
 
 <script>
   //Fonction qui va ajouter les bots au chargement dans des cartes différentes
-  function addbotcard(data,j){
+  function addBotCard(data,j){
     card = document.createElement("div")
     card.className = 'card';
 
     div1 = document.createElement("div");
     div1.className = 'customdiv';
     idlabel = document.createElement("label");
-    idlabel.innerHTML = "Id : ";
+    idlabel.innerHTML = "Id : "+ data[j].id;
     id = document.createElement("label");
     id.setAttribute("id", "id" + j);
     div1.appendChild(idlabel)
@@ -44,7 +44,7 @@
     div2 = document.createElement("div");
     div2.className = 'customdiv';
     namelabel = document.createElement("label");
-    namelabel.innerHTML = "Name : ";
+    namelabel.innerHTML = "Name : "+data[j].name;
     botname = document.createElement("label");
     botname.setAttribute("id", "nom" + j);
     div2.appendChild(namelabel)
@@ -55,7 +55,7 @@
     div3 = document.createElement("div");
     div3.className = 'customdiv';
     brainlabel = document.createElement("label");
-    brainlabel.innerHTML = "Brains : ";
+    brainlabel.innerHTML = "Brains : "+data[j].brain;
     brains = document.createElement("label");
     brains.setAttribute("id", "cerveau" + j);
     div3.appendChild(brainlabel)
@@ -66,7 +66,7 @@
     div4 = document.createElement("div");
     div4.className = 'customdiv';
     portlabel = document.createElement("label");
-    portlabel.innerHTML = "Port :";
+    portlabel.innerHTML = "Port :"+data[j].port;
     port = document.createElement("label");
     port.setAttribute("id", "port" + j);
     div4.appendChild(portlabel)
@@ -94,18 +94,9 @@
 <script>
   //Lors du chargement de la page on va aller récupérer les données sur une autre page pour les charger, ici on récupère tout les bots et leurs informations
   window.onload = function(){
-      $.ajax({
-          type: 'GET',
-          url: '/bot',
-          success: (data) => {
+      $.ajax({type: 'GET',url: '/bot',success: (data) => {
             for (var j = 0; j <data.length ; j++){
-              addbotcard(data,j);
-              console.log(data[j].id);
-              document.getElementById("id" + j).innerHTML = data[j].id;
-              document.getElementById("nom" + j).innerHTML = data[j].name;
-              document.getElementById("cerveau" + j).innerHTML = data[j].brain;
-              document.getElementById("port" + j).innerHTML = data[j].port;
-            
+              addBotCard(data,j);           
             }
           }
         })

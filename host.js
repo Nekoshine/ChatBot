@@ -21,7 +21,7 @@ function lancementServBot(port,brain){
     var corsOptions = {
       origin: 'http://localhost:'+port+'/chat',
       methods: 'GET,POST,PUT,DELETE',
-      optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+      optionsSuccessStatus: 200 
     };
     var type = typeof brain;
     console.log(type);
@@ -42,7 +42,7 @@ function lancementServBot(port,brain){
     // Lors d'une requête get sur la page du bot, on va donc pré-répondre pour accueillir l'utilisateur
     app.get('/chat', cors(corsOptions), function(req, res) {
         data =[] //Stockage du message
-        var json = {"message": "Bonjour humain je suis un robot", "reponse" : ""}; //Message à envoyer à l'ejs
+        var json = {"message": "", "reponse" : "Bonjour humain je suis un robot"}; //Message à envoyer à l'ejs
         data.push(json);
         res.render('chat_bot',{list : data}); 
     });
@@ -53,7 +53,7 @@ function lancementServBot(port,brain){
         portCerveau = req.headers["host"].split(':')[1]; //On isole le port du bot pour le retrouver dans le tableau
         const message = JSON.parse(JSON.stringify(req.body));
         bot[portCerveau].reply("Utilisateur", message["message"]).then(function(reply) { //On construit la réponse du bot en fournissant le message envoyé par l'utilisateur
-            var json = {"message": message["message"], "reponse" : reply}; //On met en forme la réponse
+            var json = {"message": message["message"], "réponse" : reply}; //On met en forme la réponse
             data.push(json);
             res.render('chat_bot', { list : data}); //On envoie le tout à l'affichage
         });

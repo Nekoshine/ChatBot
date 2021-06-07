@@ -17,10 +17,10 @@
 <div class = "discussion">
 
   <div class = chat>
-    <ul>
-      <% list.forEach(function(dataMessage) { %>
-        <div class=human> <%= dataMessage.message %></div>
-        <div class=bot> <%= dataMessage.reponse %></div>
+    <ul> <!-- Ici on va récupérer les messages fournis dans la requête pour construire l'affichage-->
+      <% list.forEach(function(dataMessage) { %> <!-- Pour chaque élément dans la liste fournie -->
+        <div class=human> <%= dataMessage.message %></div> <!-- On affiche le message envoyé par l'humain-->
+        <div class=bot> <%= dataMessage.reponse %></div> <!-- On affiche la réponse du chatbot-->
         <% }); %>
       </ul>
   </div>
