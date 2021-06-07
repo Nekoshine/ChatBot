@@ -21,7 +21,7 @@
     
     <div>
       <label>Id :</label>
-      <select name = 'id' , id = 'id', onchange= "recuperer_attribut_bot()"></select>
+      <select name = 'id' , id = 'id', onchange= "recuperer_attribut_bot()"></select>   <!-- la focntion est appelé chque fois que le champs du select est modifié -->
     </div>
 
     <div>
@@ -65,15 +65,15 @@
 <script>
   var format = {};
 
-// action sur les boutons onclick
+// action sur les boutons onclick declenchant respectivement la suppression, la modification et l'ajout d'un cerveau 
 
   $(document).ready(function(){
     $('.supprimer').on("click",function(e){
         e.preventDefault();
-        var id = $('#id').val();
-        $.ajax({
+        var id = $('#id').val();            //on recupère l'id courant dans le formaulaire
+        $.ajax({                            
           type: "DELETE",
-          url : "/bot/" + id,
+          url : "/bot/" + id,               //on effectue un requete DELETE avec cet id en paramètre qui va entrainer la suppression du bot correspondant
           success: (data) => {
             console.log(data);
           },
@@ -87,11 +87,11 @@
 
     $('.modifier').on("click",function(e){
       e.preventDefault();
-      var id = $('#id').val();
-      formater();
+      var id = $('#id').val();           //on recupère l'id courant dans le formaulaire
+      formater();                        //appel de la fonction formater qui va agréger les données du "formulaire" afin de preparer un json 
       $.ajax({
-        type: "PUT",
-        url : "/bot/",
+        type: "PUT",                      //on effectue un requete put avec en objet le json correspondant au bot avec les informations modifiées
+        url : "/bot/",                    // qui va entrainer l'enregistrement de ces modifications
         data : JSON.stringify(format),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -106,13 +106,13 @@
 
     $('.ajouterCerveau').on("click",function(e){
       e.preventDefault();
-      var id = $('#id').val();
-      $.ajax({
+      var id = $('#id').val();     //on recupère l'id courant dans le formaulaire
+      $.ajax({                     //on effectue un requete GET avec cet id en paramètre afin de récuperer le json du bot correspondant
         type: 'GET',
         url : "/bot/" + id,
         success: (data) => {
           console.log(data);
-          ajouterCerveau(data);
+          ajouterCerveau(data); // on appelle la fonction ajouterCerveau avec ce json récuperé
         },
         error: err => {
           console.log(err);
@@ -125,34 +125,35 @@
     var cerveau = data.brain
     var type = typeof cerveau
     
-    var cerveau_encours_ajout = document.getElementById("select_ajouter_nouveau_cerveau").value
-    var ens_cerveau = []
+    var cerveau_encours_ajout = document.getElementById("select_ajouter_nouveau_cerveau").value   // on recupere le cerveau qui est prevu à l'ajout
+    var ens_cerveau = []                                                                          //va permettre la fusion entre les cerveaux chargés et le nouveau cerveau
     if (cerveau_encours_ajout == undefined){
-      console.log('vous devez choisir un nouveau cerveau ! ')
+      console.log('vous devez choisir un nouveau cerveau ! ')       //si le select n'est pas rempli ..
     }
     else{
-      if(type =="string"){
-        if(brain == cerveau_encours_ajout){
+      if(type =="string"){                                          //correspond au cas ou un seul cerveau est chargé 
+        if(cerveau == cerveau_encours_ajout){                         //si on souhaite ajouter un cerveau déja chargé ...
           console.log('ce cerveau est déja chargé ! ')
         }
         else{
-        ens_cerveau.push(cerveau_encours_ajout);
-        ens_cerveau.push(brain);}
+        ens_cerveau.push(cerveau_encours_ajout);                    //sinon on recupere le cerveau que l'on veut ajouter 
+        ens_cerveau.push(brain);}                                   //puis celui deja chargé
       }
-      else{
-        if(brain.includes(cerveau_encours_ajout)){
+      else{                                                         //sinon plusieurs cerveaux sont déja chargés
+        if(cerveau.includes(cerveau_encours_ajout)){                 //si on souhaite ajouter un cerveau déja chargé ...
           console.log('ce cerveau est déja chargé !')
         }
         else{
-        brain.push(cerveau_encours_ajout);
-        ens_cerveau= brain;}
+        cerveau.push(cerveau_encours_ajout);                        //sinon on ajoute le nouveau cerveau a la liste de ceux deja enregister
+        ens_cerveau= cerveau;}
       }
-    if(ens_cerveau != []){
+
+    if(ens_cerveau.length > 1){                                     //si jamais nous sommes tombé dans un des cas d'erreur , on ne touche pas a data.brain (length = 0 signifie que ens_cerveau n'a pas ete modifié)
     data.brain = ens_cerveau;}
 
     $.ajax({
       type: 'PUT',
-      url: '/bot/',
+      url: '/bot/',                                                //enfin on effectue une requete PUT afin d'enregistrer la modification 
       data : JSON.stringify(data),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
@@ -173,13 +174,13 @@
   var div = document.getElementById('cerveaux');
   var liste = document.getElementById('liste');
 
-  //affichage du nom
+  //affichage du nom dans le "formulaire"
 
   function remplir_nom(nom){
     document.forms.informationbot.name.value = nom
   }
 
-  //affichage port
+  //affichage du pport dans le "formulaire"
 
   function remplir_port(port){
     document.forms.informationbot.port.value = port
@@ -191,15 +192,15 @@
     var type = typeof cerveau;
 
     try{div.removeChild(divlist)}
-    catch(e){
-      console.log("An error occured : "+ e);}
+    catch(e){                                                           //  permet de gerer le changementr des cerveaux lors du onchange de la rubrique id, 
+      console.log("An error occured : "+ e);}                           // ainsi les anciens cerveaux affichés sont detruit pour pouvoir laisser la place à ceux du nouvel id considéré
 
     divlist = document.createElement("div");
     divlist.setAttribute("id", "divlist");  
 
     if(type=="string"){
       nom_cerveau = document.createElement("input");
-      nom_cerveau.type = "text"
+      nom_cerveau.type = "text"                                          // si un seul cerveau
       nom_cerveau.name = "nom_cerveau"
       nom_cerveau.disabled = true
       nom_cerveau.value = cerveau
@@ -210,7 +211,7 @@
         
         for(var i=0; i<cerveau.length; i++){
           nom_cerveau = document.createElement("input");
-          nom_cerveau.type = "text"
+          nom_cerveau.type = "text"                                     //si il y a une liste de cerveau
           nom_cerveau.name = "nom_cerveau"
           nom_cerveau.disabled = true
           nom_cerveau.value = cerveau[i]
@@ -222,13 +223,13 @@
     };
 
 
-  //remplit le menu deroulant des id 
+  //remplit les options du menu deroulant des id 
 
   function optionid(id){
     document.forms.informationbot.id.options[document.forms.informationbot.id.options.length] = new Option(id,id);
   }
 
-  //remplit le menu deroulant des cerveaux pour l'ajout
+  //remplit les options du menu deroulant des cerveaux pour l'ajout d'un nouveau cerveau
 
   function optioncerveau(value,nom){
    
@@ -236,16 +237,16 @@
     };
 
 
-  // recupere les données du bot et les affiche
+  // fonction appellée lors du onchange ligne 24
 
-  function recuperer_attribut_bot(){
+  function recuperer_attribut_bot(){          
     var id = $("#id").val();
     $.ajax({
-      type: "GET",
-      url: "/bot/" + id,
+      type: "GET",  
+      url: "/bot/" + id,                      //Requete GET afin de récupérer le json correpondnat à l'id 
       success : (data) => {
 
-        remplir_nom(data["name"]);
+        remplir_nom(data["name"]);            // puis affichage des differents attributs 
         remplir_port(data["port"]);
         remplir_cerveau(data["brain"]);
       },
@@ -256,19 +257,19 @@
    
   };
 
-  //recupere les données rentrées dans les differents champs
+  //recupere les données rentrées dans les differents champs afin de produire un objet json correspondant à celles co 
 
   function formater(){
     var tabcerveau = [];
     format.id = parseInt(document.getElementById("id").value);
     format.name = document.getElementById("name").value;
-    format.brain = "";
+    format.brain = "";                                                  //extraction des donnees
     format.port = parseInt(document.getElementById("port").value);
 
     var cerveaux = document.getElementsByName("nom_cerveau");
 
     for (var i=0; i<cerveaux.length;i++){
-      script = cerveaux[i].value
+      script = cerveaux[i].value                                        //traitement plus spécifique pour les cerveaux 
       tabcerveau.push(script);
       }
     format.brain =tabcerveau;  
@@ -276,7 +277,7 @@
 
 
 
-  // remplit des menu deroulants des cerveaux chargés (pour le bon deroulement de la modification)
+ 
 
   
 
