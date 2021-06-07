@@ -12,7 +12,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })) 
 app.use(express.static('public'))
 app.use(cors());
-var corsOptions = {
+var corsOptions = { //On utilise cors pour partager les données entre les serveurs.
   origin: 'http://localhost:'+port,
   methods: 'GET,POST,PUT,DELETE',
   optionsSuccessStatus: 200 
@@ -79,7 +79,7 @@ app.post('/bot',cors(corsOptions), function(req,res){
 
 	else{ //Sinon on ajoute le bot à la liste et on lance le serveur
 		var chatbot = ChatbotServiceInstance.addChatbot(futurChatBot); // Ajout du bot à la liste des bots
-		host.lancementServBot(futurChatBot["port"],futurChatBot["brain"]); //Lancement du serveur du bot
+		host.bouche(futurChatBot["port"],futurChatBot["brain"]); //Lancement du serveur du bot
 		res.redirect('/')
 	}
 });
@@ -87,9 +87,13 @@ app.post('/bot',cors(corsOptions), function(req,res){
 //La requête put permet de mettre à jour un bot 
 app.put('/bot',cors(corsOptions),function(req,res){
 	if(req.is('json')){		
+			var oldBot = ChatbotServiceInstance.getChatbot(req.body.id)
 			var chatbot = ChatbotServiceInstance.updateBot(req.body); //Modification du bot dans la liste
 			if(undefined != chatbot){
 				res.setHeader('Content-Type', 'application/json');
+				host.arretServer(oldBot["port"]) //On arrete le serveur contenant le chatbot pour la mise à jour
+				console.log(chatbot["brain"]+ "port : " +  chatbot["port"])
+				host.bouche(chatbot["port"],chatbot["brain"]) //On relance le serveur pour que les changements s'appliquent
 				res.json(chatbot);
 			}
 			else{
@@ -99,10 +103,13 @@ app.put('/bot',cors(corsOptions),function(req,res){
 	})
 
 	//La requête delete permet la suppression du bot qui à l'id spécifié
-app.delete('/bot/:id',cors(corsOptions),(req,res)=>{
+app.delete('/bot/:id',cors(corsOptions),function(req,res){
+	chatbotDelete =ChatbotServiceInstance.getChatbot(parseInt(req.params.id));
+	console.log(chatbotDelete)
 	let id = ChatbotServiceInstance.deleteChatbot(parseInt(req.params.id)); //Suppression du bot de la liste
 	if (undefined != id){
 		res.setHeader('Content-Type', 'text/plain');
+		host.arretServer(chatbotDelete["port"]) //On arrete le serveur hébergant le chatbot
 		res.status(200).send('OK');
 	}
 	else{

@@ -7,7 +7,7 @@
 <body>
 
 <div class="header">
-  <h1>Interface de modification et/ou suppression </h1>
+  <h1>Interface de modification et/ou de suppression </h1>
 </div>
 
 <div class="topnav">
@@ -19,7 +19,7 @@
   <form action = "/bot" , method = "POST", name = informationbot>    
     <div>
       <label>Id :</label>
-      <select name = 'id' , id = 'id', onchange= "recuperer_attribut_bot()"></select>   <!-- la focntion est appelé chque fois que le champs du select est modifié -->
+      <select name = 'id' , id = 'id', onchange= "recupererAttributBot()"></select>   <!-- la fonction est appelée chaque fois que le champs du select est modifié -->
     </div>
     <div>
       <label>Name :</label>
@@ -38,11 +38,11 @@
     </div>
     <div>
       <label>Cerveau à ajouter :</label>
-      <select id="select_ajouter_nouveau_cerveau", name = "select_ajouter_nouveau_cerveau">
+      <select id="selectAjouterNouveauCerveau", name = "selectAjouterNouveauCerveau">
         <option value= ""></option>
       </select>
       <button class = "ajouterCerveau">ajouter le cerveau</button>
-      <input type=submit style = "visibility :hidden" disabled >
+      <input  type=submit style = "visibility :hidden" disabled >
     </div>
   </form>
 </div>
@@ -85,7 +85,7 @@
         error: (err) => {
             console.log(err);
         }
-      });      
+      });    
     });
 
     $('.ajouterCerveau').on("click",function(e){
@@ -107,38 +107,35 @@
     var cerveau = data.brain
     var type = typeof cerveau
     
-    var cerveau_encours_ajout = document.getElementById("select_ajouter_nouveau_cerveau").value   // on recupere le cerveau qui est prevu à l'ajout
-    var ens_cerveau = []                                                                          //va permettre la fusion entre les cerveaux chargés et le nouveau cerveau
-    if (cerveau_encours_ajout == undefined){
+    var nouveauCerveau = document.getElementById("selectAjouterNouveauCerveau").value   // on recupere le cerveau qui est prevu à l'ajout
+    var ensembleCerveau = []                                                                          //va permettre la fusion entre les cerveaux chargés et le nouveau cerveau
+    if (nouveauCerveau == undefined){
       console.log('vous devez choisir un nouveau cerveau ! ')       //si le select n'est pas rempli ..
     }
     else{
       if(type =="string"){                                          //correspond au cas ou un seul cerveau est chargé 
-        if(cerveau == cerveau_encours_ajout){                         //si on souhaite ajouter un cerveau déja chargé ...
+        if(cerveau == nouveauCerveau){                         //si on souhaite ajouter un cerveau déja chargé ...
           console.log('ce cerveau est déja chargé ! ')
         }
         else{
-        ens_cerveau.push(cerveau_encours_ajout);                    //sinon on recupere le cerveau que l'on veut ajouter 
-        ens_cerveau.push(brain);}                                   //puis celui deja chargé
+        ensembleCerveau.push(nouveauCerveau);                    //sinon on recupere le cerveau que l'on veut ajouter 
+        ensembleCerveau.push(cerveau);}                                   //puis celui deja chargé
       }
       else{                                                         //sinon plusieurs cerveaux sont déja chargés
-        if(cerveau.includes(cerveau_encours_ajout)){                 //si on souhaite ajouter un cerveau déja chargé ...
+        if(cerveau.includes(nouveauCerveau)){                 //si on souhaite ajouter un cerveau déja chargé ...
           console.log('ce cerveau est déja chargé !')
         }
         else{
-        cerveau.push(cerveau_encours_ajout);                        //sinon on ajoute le nouveau cerveau a la liste de ceux deja enregister
-        ens_cerveau= cerveau;}
+        cerveau.push(nouveauCerveau);                        //sinon on ajoute le nouveau cerveau a la liste de ceux deja enregister
+        ensembleCerveau= cerveau;}
       }
 
-    if(ens_cerveau.length > 1){                                     //si jamais nous sommes tombé dans un des cas d'erreur , on ne touche pas a data.brain (length = 0 signifie que ens_cerveau n'a pas ete modifié)
-    data.brain = ens_cerveau;}
+    if(ensembleCerveau.length > 1){                                     //si jamais nous sommes tombé dans un des cas d'erreur , on ne touche pas a data.brain (length = 0 signifie que ensembleCerveau n'a pas ete modifié)
+    data.brain = ensembleCerveau;}
 
     $.ajax({
       type: 'PUT', url: '/bot/',        //enfin on effectue une requete PUT afin d'enregistrer la modification 
-      data : JSON.stringify(data),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      success: (data) =>{               
+      data : JSON.stringify(data),contentType: "application/json; charset=utf-8",dataType: "json",success: (data) =>{               
         console.log(data);},
       error: (err) => {
         console.log(err);
@@ -152,19 +149,19 @@
 
   //affichage du nom dans le "formulaire"
 
-  function remplir_nom(nom){
+  function remplirNom(nom){
     document.forms.informationbot.name.value = nom
   }
 
   //affichage du pport dans le "formulaire"
 
-  function remplir_port(port){
+  function remplirPort(port){
     document.forms.informationbot.port.value = port
   }
 
   //affichage du/des cerveaux
 
-  function remplir_cerveau(cerveau){
+  function remplirCerveau(cerveau){
     var type = typeof cerveau;
 
     try{div.removeChild(divlist)}
@@ -175,23 +172,23 @@
     divlist.setAttribute("id", "divlist");  
 
     if(type=="string"){
-      nom_cerveau = document.createElement("input");
-      nom_cerveau.type = "text"                                          // si un seul cerveau
-      nom_cerveau.name = "nom_cerveau"
-      nom_cerveau.disabled = true
-      nom_cerveau.value = cerveau
+      nomCerveau = document.createElement("input");
+      nomCerveau.type = "text"                                          // si un seul cerveau
+      nomCerveau.name = "nomCerveau"
+      nomCerveau.disabled = true
+      nomCerveau.value = cerveau
       
-      divlist.appendChild(nom_cerveau)
+      divlist.appendChild(nomCerveau)
     }
     else{        
         for(var i=0; i<cerveau.length; i++){
-          nom_cerveau = document.createElement("input");
-          nom_cerveau.type = "text"                                     //si il y a une liste de cerveau
-          nom_cerveau.name = "nom_cerveau"
-          nom_cerveau.disabled = true
-          nom_cerveau.value = cerveau[i]
+          nomCerveau = document.createElement("input");
+          nomCerveau.type = "text"                                     //si il y a une liste de cerveau
+          nomCerveau.name = "nomCerveau"
+          nomCerveau.disabled = true
+          nomCerveau.value = cerveau[i]
           
-          divlist.appendChild(nom_cerveau)
+          divlist.appendChild(nomCerveau)
         }
       }
     div.appendChild(divlist);
@@ -199,28 +196,28 @@
 
   //remplit les options du menu deroulant des id 
 
-  function optionid(id){
+  function optionId(id){
     document.forms.informationbot.id.options[document.forms.informationbot.id.options.length] = new Option(id,id);
   }
 
   //remplit les options du menu deroulant des cerveaux pour l'ajout d'un nouveau cerveau
 
-  function optioncerveau(value,nom){   
-    document.forms.informationbot.select_ajouter_nouveau_cerveau.options[document.forms.informationbot.select_ajouter_nouveau_cerveau.options.length]=new Option(value,nom);
+  function optionCerveau(value,nom){   
+    document.forms.informationbot.selectAjouterNouveauCerveau.options[document.forms.informationbot.selectAjouterNouveauCerveau.options.length]=new Option(value,nom);
     };
 
 
   // fonction appellée lors du onchange ligne 24
 
-  function recuperer_attribut_bot(){          
+  function recupererAttributBot(){          
     var id = $("#id").val();
     $.ajax({
       type: "GET",  
       url: "/bot/" + id,                      //Requete GET afin de récupérer le json correpondnat à l'id 
       success : (data) => {
-        remplir_nom(data["name"]);            // puis affichage des differents attributs 
-        remplir_port(data["port"]);
-        remplir_cerveau(data["brain"]);
+        remplirNom(data["name"]);            // puis affichage des differents attributs 
+        remplirPort(data["port"]);
+        remplirCerveau(data["brain"]);
       },
       error: (err) => {
         console.log(err);
@@ -237,7 +234,7 @@
     format.name = document.getElementById("name").value;
     format.brain = "";                                                  //extraction des donnees
     format.port = parseInt(document.getElementById("port").value);
-    var cerveaux = document.getElementsByName("nom_cerveau");
+    var cerveaux = document.getElementsByName("nomCerveau");
     for (var i=0; i<cerveaux.length;i++){
       script = cerveaux[i].value                                        //traitement plus spécifique pour les cerveaux 
       tabcerveau.push(script);
@@ -247,13 +244,10 @@
 
 //affichage au chargement de la page  
   window.onload = function(){
-    $.ajax({
-        type: 'GET',
-        url: '/bot',
-        success: (data) => {
+    $.ajax({type: 'GET',url: '/bot',success: (data) => {
             for (var i=0; i<data.length; i++) {
-                   optionid(data[i]["id"]);
-                   recuperer_attribut_bot()
+                   optionId(data[i]["id"]);
+                   recupererAttributBot()
             };
         },
         error: (err) => {
@@ -261,8 +255,7 @@
         }
         })
     for (var i=0; i<Brain.length; i++) {
-        optioncerveau(Brain[i]["name"],Brain[i]["brain"]);
-
+        optionCerveau(Brain[i]["name"],Brain[i]["brain"]);
     };
 }
 </script>

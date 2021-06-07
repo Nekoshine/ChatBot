@@ -17,7 +17,7 @@ var cptMessages =0;
 /*
 Fonction qui va permettre de lancer le bot sur un serveur à part avec un port et un/des cerveau/x spécifié/s.
 */
-function lancementServBot(port,brain){
+function bouche(port,brain){
     bot[port] = new RiveScript();
     var corsOptions = {
       origin: 'http://localhost:'+port+'/chat',
@@ -38,7 +38,7 @@ function lancementServBot(port,brain){
             }
         }
     }
-    run(port); //Lancement du serveur
+    lancementServ(port); //Lancement du serveur
 
     // Lors d'une requête get sur la page du bot, on va donc pré-répondre pour accueillir l'utilisateur
     app.get('/chat/:nom', cors(corsOptions), function(req, res) {
@@ -53,11 +53,9 @@ function lancementServBot(port,brain){
     app.post('/chat', cors(corsOptions), function (req, res)  {
         cptMessages++;
         portCerveau = req.headers["host"].split(':')[1]; //On isole le port du bot pour le retrouver dans le tableau
-        const message = JSON.parse(JSON.stringify(req.body));
-        console.log(message);
+        const message = JSON.parse(JSON.stringify(req.body)); //On récupère le message de l'utilisateur
         bot[portCerveau].reply("Utilisateur", message["message"]).then(function(reply) { //On construit la réponse du bot en fournissant le message envoyé par l'utilisateur
             var json = {"message": message["message"], "reponse" : reply,"cpt" : cptMessages}; //On met en forme la réponse
-            console.log(reply);
             data.push(json);
             res.render('chat_bot', { list : data}); //On envoie le tout à l'affichage
         });
@@ -72,17 +70,17 @@ function lancementServBot(port,brain){
        console.log("Erreur lors du chargement du cerveau: " + error); 
      }
 };
-    function stop(port){ //Fonction de fermeture du serveur
+    function arretServer(port){ //Fonction de fermeture du serveur
          console.log("Fermeture du port :"+port);
          serverBot[port].close();
     };
 
-    function run(port){ // FOnction de lancement du serveur
+    function lancementServ(port){ // Fonction de lancement du serveur
         serverBot[port] = app.listen(port, function () {
-          console.log("Port ouvert :"+port);
+        console.log("Port en écoute :"+port);
         });
     };
 
-module.exports.lancementServBot = lancementServBot;
-module.exports.run = run;
-module.exports.stop = stop;
+module.exports.bouche = bouche;
+module.exports.lancementServ = lancementServ;
+module.exports.arretServer = arretServer;
