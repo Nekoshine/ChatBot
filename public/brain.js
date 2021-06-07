@@ -1,8 +1,8 @@
 
 Brain =  [
 	{
-		"name" : "Basique",
-		"brain" : "./brains/brain.rive",
+		"name" : "Standart",
+		"brain" : "./brains/standart.rive",
 	},
 
 	{
