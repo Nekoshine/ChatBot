@@ -132,20 +132,20 @@
     }
     else{
       if(type =="string"){
-        if(cerveau == cerveau_encours_ajout){
+        if(brain == cerveau_encours_ajout){
           console.log('ce cerveau est déja chargé ! ')
         }
         else{
         ens_cerveau.push(cerveau_encours_ajout);
-        ens_cerveau.push(cerveau);}
+        ens_cerveau.push(brain);}
       }
       else{
-        if(cerveau.includes(cerveau_encours_ajout)){
+        if(brain.includes(cerveau_encours_ajout)){
           console.log('ce cerveau est déja chargé !')
         }
         else{
-        cerveau.push(cerveau_encours_ajout);
-        ens_cerveau= cerveau;}
+        brain.push(cerveau_encours_ajout);
+        ens_cerveau= brain;}
       }
     if(ens_cerveau != []){
     data.brain = ens_cerveau;}
@@ -171,6 +171,7 @@
 
 
   var div = document.getElementById('cerveaux');
+  var liste = document.getElementById('liste');
 
   //affichage du nom
 
@@ -201,18 +202,18 @@
       nom_cerveau.type = "text"
       nom_cerveau.name = "nom_cerveau"
       nom_cerveau.disabled = true
-      nom_cerveau.value = brain
+      nom_cerveau.value = cerveau
       
       divlist.appendChild(nom_cerveau)
     }
     else{
         
-        for(var i=0; i<brain.length; i++){
+        for(var i=0; i<cerveau.length; i++){
           nom_cerveau = document.createElement("input");
           nom_cerveau.type = "text"
           nom_cerveau.name = "nom_cerveau"
           nom_cerveau.disabled = true
-          nom_cerveau.value = brain[i]
+          nom_cerveau.value = cerveau[i]
           
           divlist.appendChild(nom_cerveau)
         }
@@ -246,7 +247,7 @@
 
         remplir_nom(data["name"]);
         remplir_port(data["port"]);
-        remplir_brain(data["brain"]);
+        remplir_cerveau(data["brain"]);
       },
       error: (err) => {
         console.log(err);
@@ -258,7 +259,7 @@
   //recupere les données rentrées dans les differents champs
 
   function formater(){
-    var tabbrain = [];
+    var tabcerveau = [];
     format.id = parseInt(document.getElementById("id").value);
     format.name = document.getElementById("name").value;
     format.brain = "";
@@ -268,9 +269,9 @@
 
     for (var i=0; i<cerveaux.length;i++){
       script = cerveaux[i].value
-      tabbrain.push(script);
+      tabcerveau.push(script);
       }
-    format.brain =tabbrain;  
+    format.brain =tabcerveau;  
   };
 
 
