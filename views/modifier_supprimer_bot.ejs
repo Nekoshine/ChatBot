@@ -21,7 +21,7 @@
     
     <div>
       <label>Id :</label>
-      <select name = 'id' , id = 'id', onchange= "cherche_bot()"></select>
+      <select name = 'id' , id = 'id', onchange= "recuperer_attribut_bot()"></select>
     </div>
 
     <div>
@@ -29,7 +29,7 @@
       <input type="text" id="name" name="name">
     </div>
 
-    <div id= "brains">
+    <div id= "cerveaux">
       <label>Cerveau :</label>
     </div>
 
@@ -40,17 +40,17 @@
 
     <div>
         
-        <button class = "modify">Modifier</button>
-        <button class = "delete">Supprimer</button>
+        <button class = "modifier">Modifier</button>
+        <button class = "supprimer">Supprimer</button>
         
     </div>
 
     <div>
       <label>Cerveau à ajouter :</label>
-      <select id="addbrainselect", name = "addbrainselect">
+      <select id="select_ajouter_nouveau_cerveau", name = "select_ajouter_nouveau_cerveau">
         <option value= ""></option>
       </select>
-      <button class = "addbrain">ajouter le cerveau</button>
+      <button class = "ajouterCerveau">ajouter le cerveau</button>
       <input type=submit style = "visibility :hidden" disabled >
     </div>
   </form>
@@ -68,7 +68,7 @@
 // action sur les boutons onclick
 
   $(document).ready(function(){
-    $('.delete').on("click",function(e){
+    $('.supprimer').on("click",function(e){
         e.preventDefault();
         var id = $('#id').val();
         $.ajax({
@@ -85,13 +85,10 @@
         
       });
 
-    $('.modify').on("click",function(e){
+    $('.modifier').on("click",function(e){
       e.preventDefault();
       var id = $('#id').val();
-      console.log("je formate")
       formater();
-      console.log("j'ai fini de formate")
-      console.log("format contient" + JSON.stringify(format))
       $.ajax({
         type: "PUT",
         url : "/bot/",
@@ -107,7 +104,7 @@
       });      
     });
 
-    $('.addbrain').on("click",function(e){
+    $('.ajouterCerveau').on("click",function(e){
       e.preventDefault();
       var id = $('#id').val();
       $.ajax({
@@ -115,7 +112,7 @@
         url : "/bot/" + id,
         success: (data) => {
           console.log(data);
-          addbrain(data);
+          ajouterCerveau(data);
         },
         error: err => {
           console.log(err);
@@ -124,34 +121,34 @@
     });
   });
 
-  function addbrain(data){
-    var brain = data.brain
-    var type = typeof brain
+  function ajouterCerveau(data){
+    var cerveau = data.brain
+    var type = typeof cerveau
     
-    var addedbrain = document.getElementById("addbrainselect").value
-    var newbrain = []
-    if (addedbrain == undefined){
+    var cerveau_encours_ajout = document.getElementById("select_ajouter_nouveau_cerveau").value
+    var ens_cerveau = []
+    if (cerveau_encours_ajout == undefined){
       console.log('vous devez choisir un nouveau cerveau ! ')
     }
     else{
       if(type =="string"){
-        if(brain == addedbrain){
+        if(cerveau == cerveau_encours_ajout){
           console.log('ce cerveau est déja chargé ! ')
         }
         else{
-        newbrain.push(addedbrain);
-        newbrain.push(brain);}
+        ens_cerveau.push(cerveau_encours_ajout);
+        ens_cerveau.push(cerveau);}
       }
       else{
-        if(brain.includes(addedbrain)){
+        if(cerveau.includes(cerveau_encours_ajout)){
           console.log('ce cerveau est déja chargé !')
         }
         else{
-        brain.push(addedbrain);
-        newbrain= brain;}
+        cerveau.push(cerveau_encours_ajout);
+        ens_cerveau= cerveau;}
       }
-
-    data.brain = newbrain;
+    if(ens_cerveau != []){
+    data.brain = ens_cerveau;}
 
     $.ajax({
       type: 'PUT',
@@ -173,13 +170,12 @@
 
 
 
-  var div = document.getElementById('brains');
-  var liste = document.getElementById('liste');
+  var div = document.getElementById('cerveaux');
 
   //affichage du nom
 
-  function remplir_nom(name){
-    document.forms.informationbot.name.value = name
+  function remplir_nom(nom){
+    document.forms.informationbot.name.value = nom
   }
 
   //affichage port
@@ -190,8 +186,8 @@
 
   //affichage du/des cerveaux
 
-  function remplir_brain(brain){
-    var type = typeof brain;
+  function remplir_cerveau(cerveau){
+    var type = typeof cerveau;
 
     try{div.removeChild(divlist)}
     catch(e){
@@ -201,24 +197,24 @@
     divlist.setAttribute("id", "divlist");  
 
     if(type=="string"){
-      brainname = document.createElement("input");
-      brain.type = "text"
-      brainname.name = "brainname"
-      brainname.disabled = true
-      brainname.value = brain
+      nom_cerveau = document.createElement("input");
+      nom_cerveau.type = "text"
+      nom_cerveau.name = "nom_cerveau"
+      nom_cerveau.disabled = true
+      nom_cerveau.value = brain
       
-      divlist.appendChild(brainname)
+      divlist.appendChild(nom_cerveau)
     }
     else{
         
         for(var i=0; i<brain.length; i++){
-          brainname = document.createElement("input");
-          brain.type = "text"
-          brainname.name = "brainname"
-          brainname.disabled = true
-          brainname.value = brain[i]
+          nom_cerveau = document.createElement("input");
+          nom_cerveau.type = "text"
+          nom_cerveau.name = "nom_cerveau"
+          nom_cerveau.disabled = true
+          nom_cerveau.value = brain[i]
           
-          divlist.appendChild(brainname)
+          divlist.appendChild(nom_cerveau)
         }
       }
     div.appendChild(divlist);
@@ -233,15 +229,15 @@
 
   //remplit le menu deroulant des cerveaux pour l'ajout
 
-  function optionbrain(value,nom){
+  function optioncerveau(value,nom){
    
-    document.forms.informationbot.addbrainselect.options[document.forms.informationbot.addbrainselect.options.length]=new Option(value,nom);
+    document.forms.informationbot.select_ajouter_nouveau_cerveau.options[document.forms.informationbot.select_ajouter_nouveau_cerveau.options.length]=new Option(value,nom);
     };
 
 
   // recupere les données du bot et les affiche
 
-  function cherche_bot(){
+  function recuperer_attribut_bot(){
     var id = $("#id").val();
     $.ajax({
       type: "GET",
@@ -268,9 +264,10 @@
     format.brain = "";
     format.port = parseInt(document.getElementById("port").value);
 
-    var brains = document.getElementsByName("brainname");
-    for (var i=0; i<brains.length;i++){
-      script = brains[i].value
+    var cerveaux = document.getElementsByName("nom_cerveau");
+
+    for (var i=0; i<cerveaux.length;i++){
+      script = cerveaux[i].value
       tabbrain.push(script);
       }
     format.brain =tabbrain;  
@@ -292,7 +289,7 @@
         success: (data) => {
             for (var i=0; i<data.length; i++) {
                    optionid(data[i]["id"]);
-                   cherche_bot()
+                   recuperer_attribut_bot()
             };
         },
         error: (err) => {
@@ -301,7 +298,7 @@
         })
 
     for (var i=0; i<Brain.length; i++) {
-        optionbrain(Brain[i]["name"],Brain[i]["brain"]);
+        optioncerveau(Brain[i]["name"],Brain[i]["brain"]);
 
     };
 }
