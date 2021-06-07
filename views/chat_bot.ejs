@@ -16,16 +16,16 @@
 <main>
 <div class = "discussion">
 
-  <div>
+  <div class = chat>
     <ul>
       <% list.forEach(function(dataMessage) { %>
-        <li> <%= "Bot : "+  dataMessage.message %></li>
-        <li> <%= "Utilisateur : " + dataMessage.reponse %></li>
+        <div class=human> <%= dataMessage.message %></div>
+        <div class=bot> <%= dataMessage.reponse %></div>
         <% }); %>
       </ul>
-    </div>
+  </div>
     
-<form action="/chat" method="POST"> 
+<form class= "zdt" action="/chat" method="POST"> 
     <input type = "text"  name="message" />
     <input type="submit"/>    
 </form>
